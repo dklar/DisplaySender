@@ -29,7 +29,7 @@ namespace SerialPort_ReadWrite
             display.openSerialPort();
 
 
-            Console.WriteLine("Functions: INT, TXT, QUIT, SEQ");
+            Console.WriteLine("Functions: INT, STXT, QUIT, TXT");
             
             while (input.ToLower() != "quit")
             {
@@ -55,8 +55,14 @@ namespace SerialPort_ReadWrite
                         Thread.Sleep(20);
                     }
                 }
-                if (input.ToLower().StartsWith("hel"))
+                if (input.ToLower().StartsWith("off "))
                 {
+                    display.SwitchOff();
+                }
+                if (input.ToLower().StartsWith("stxt "))
+                {
+                    input = input.Replace("stxt ", "");
+                    display.ShowStaticText(input);
                 }
                 if (input.ToLower().StartsWith("txt")) {
                     input = input.Replace("txt ","");

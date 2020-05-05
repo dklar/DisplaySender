@@ -82,6 +82,17 @@ namespace SerialPort_ReadWrite
             }
         }
 
+        public void ShowStaticText(string Text)
+        {
+            
+            int[] CharsToDisplay = PrintStringOnDisplay(Text, 0);
+            for (int i = 0; i < 180; i++)
+            {
+                serialPort.Write(BitConverter.GetBytes(CharsToDisplay[i]), 0, 3);
+                Thread.Sleep(20);
+            }
+        }
+
         /// <summary>
         /// Teielt den anzuzeigenden String in auf einmal darzustellende Zeichen auf.
         /// </summary>
