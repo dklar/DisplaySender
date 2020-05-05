@@ -15,20 +15,15 @@ namespace SerialPort_ReadWrite
         private SerialPort serialPort;
         private Dictionary<char, int> dict;
         
-        public Display(SerialPort serialPort, string DictonaryPath)
-        {
-            this.serialPort = serialPort;
-            this.dict = LoadAlphabet(DictonaryPath);
-        }
 
-        public Display(string serialPort, string DictionaryPath)
+        public Display(string serialPortNr, string DictionaryPath)
         {
             this.dict = LoadAlphabet(DictionaryPath);
-            if (serialPort == "" || !(serialPort.ToLower()).StartsWith("com"))
+            if (serialPortNr == "" || !(serialPortNr.ToLower()).StartsWith("com"))
             {
-                serialPort = "COM1";
+                serialPortNr = "COM1";
             }
-            this.serialPort = new SerialPort(serialPort);
+            this.serialPort = new SerialPort(serialPortNr);
             this.serialPort.ReadTimeout = 500;
             this.serialPort.WriteTimeout = 500;
             this.serialPort.DataBits = 8;
@@ -54,8 +49,10 @@ namespace SerialPort_ReadWrite
         {
             serialPort.DataReceived += serialDataReceivedEventHandler;
         }
-
-
+        
+        /// <summary>
+        /// Schaltet alle Pixel aus
+        /// </summary>
         public void SwitchOff()
         {
             for (int i = 0; i < 180; i++)
@@ -267,7 +264,6 @@ namespace SerialPort_ReadWrite
         /// </summary>
         /// <param name="s">Anzuzeigender Text</param>
         /// <param name="StartPosition">Startposition des Textes. Muss zwischen 0 und 130 liegen </param>
-        /// <param name="alphabet">Alphabet zur Übersetzung des Strings in int</param>
         /// <returns>Array das für ein display von 10x18 Pixel ausgelegt ist</returns>
         private int[] PrintStringOnDisplay(string s, int StartPosition)
         {
@@ -287,11 +283,6 @@ namespace SerialPort_ReadWrite
                 }
             }
             return display;
-        }
-
-        private void InitSerialPort()
-        {
-
         }
 
         private void SendSequence(ArrayList sequenz)
